@@ -1,4 +1,4 @@
-# Data Availability and Reproducibility
+# Data Availability and reproducibility
 
 Due to the large size of the **UrbanSound8K dataset**, the full set of audio files is **not included in this repository**. The dataset contains thousands of `.wav` files, which would significantly increase storage requirements and make the repository difficult to manage and share.
 
