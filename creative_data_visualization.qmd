@@ -38,7 +38,7 @@ And then I convert that sound into a time- frequency-energy representation. Freq
 **The visualization is based on a metaphor: acoustic structure becomes architecture. Instead of showing the sound as a traditional spectrogram, I map the sound onto a city skyline.**
 
 | Audio feature | Visual element | Meaning |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Frequency band | Building position along the x-axis | Lower to higher frequency regions of the sound |
 | Acoustic energy | Building height | Stronger sound energy creates taller buildings |
 | Time | Animation frame | The city changes as the sound changes |
@@ -97,6 +97,7 @@ There are 10 different sound classes in the dataset.
 To create a balanced urban soundscape, I selected one audio file from each of the ten sound classes. This prevents the final mix from being dominated by one type of sound and makes the composite soundscape represent the full variety of the dataset.
 
 ```{r}
+
 set.seed(123)
 
 # Selecting one audio file from each of the ten sound classes
@@ -119,6 +120,29 @@ sample_files %>%
   select(class, slice_file_name, path)
 ```
 
+Above, we can see this way we can pick random 10 sounds from each class from the dataset.
+
+-   **One important thing since the initial data processing part involves combining audio files together and it contains accessing different audio files based on the read CSV file randomly from each class, I have not included the whole data set which contains the audio files to the github. instead, i uploaded a sample from each fold to the github, so that someone can replicate this visualization without a storage burden.**
+
+But, since the storage requirements are high for all the audio files, i included sample audios from each class inside folds randomly and I am giving following replication easy paths for the user.
+
+```{r}
+sample_files_for_replication_1 <- c(
+  "data/UrbanSound8K/audio/fold0/177726-0-0-30.wav",  # air_conditioner
+  "data/UrbanSound8K/audio/fold1/199769-1-0-7.wav",   # car_horn
+  "data/UrbanSound8K/audio/fold2/187110-2-0-8.wav",   # children_playing
+  "data/UrbanSound8K/audio/fold3/147672-3-1-0.wav",   # dog_bark
+  "data/UrbanSound8K/audio/fold4/78360-4-0-2.wav",    # drilling
+  "data/UrbanSound8K/audio/fold5/39856-5-0-9.wav",    # engine_idling
+  "data/UrbanSound8K/audio/fold6/145683-6-3-0.wav",   # gun_shot
+  "data/UrbanSound8K/audio/fold7/162134-7-4-0.wav",   # jackhammer
+  "data/UrbanSound8K/audio/fold8/156869-8-0-6.wav",   # siren
+  "data/UrbanSound8K/audio/fold9/149370-9-0-21.wav"   # street_music
+)
+
+
+```
+
 ### Reading and cleaning audio files
 
 The selected audio clips are different in their sampling rate, channel format, amplitude, and duration. So, importantly before mixing them, I want to standardize all recordings. Each file is converted to mono, resampled to 22,050 Hz, normalized to the same amplitude range, and padded or trimmed to four seconds. This makes combining the sounds easy and meaningful for me.
@@ -126,6 +150,7 @@ The selected audio clips are different in their sampling rate, channel format, a
 Another important thing was, normalizing each file so no one sound dominates only because it is louder.
 
 ```{r}
+
 read_clean_sound <- function(path, target_sr = 22050, target_duration = 4) {
   
   # Reading the wav file
@@ -178,10 +203,12 @@ After standardizing the selected recordings, the selected sounds are combined by
 
 ```{r}
 
+sample_files
+
 # Now let's use the function I defined above to read and clean all selected audio files
 
 signals <- map(
-  sample_files$path,
+  sample_files_for_replication,
   read_clean_sound,
   target_sr = 22050,
   target_duration = 4
@@ -212,11 +239,9 @@ combined_wave <- Wave(
 writeWave(combined_wave, "combined_urban_soundscape.wav")
 ```
 
--   **One important thing since the initial data processing part involves combining audio files together and it contains accessing different audio files based on the read CSV file randomly from each class, I have not included the whole data set which contains the audio files to the github. instead, i uploaded a sample from each fold to the github, so that someone can replicate this visualization without a storage burden.**
-
--   **Someone who wants to run this visualization can start from the beginning at from this point because I am saving the combined soundscape. Since here I will be accessing this a combined soundscape to build my data set containing it's time, frequency, energy features. So basically, anyone can and move forward with the visualization from here onwards, without accessing the audio files too.**
-
 ### Converting sound into a spectrogram
+
+**Someone who wants to run this visualization can start from this point if needed, because I am saving the combined soundscape in the previous step and its been read here in below code. Since here I will be accessing the combined soundscape to build my data set containing it's time, frequency, energy features. So basically, anyone can and move forward with the visualization from here onwards, without accessing the audio files too.**
 
 To build the city from sound, I first convert the mixed audio into a spectrogram. A spectrogram shows how acoustic energy changes across time and frequency. This step is one of my critical steps because the final visualization uses the same three dimensions which are time, frequency, and energy.
 
