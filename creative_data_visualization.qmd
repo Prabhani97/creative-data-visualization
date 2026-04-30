@@ -127,7 +127,7 @@ Above, we can see this way we can pick random 10 sounds from each class from the
 But, since the storage requirements are high for all the audio files, i included sample audios from each class inside folds randomly and I am giving following replication easy paths for the user.
 
 ```{r}
-sample_files_for_replication_1 <- c(
+sample_files_for_replication <- c(
   "data/UrbanSound8K/audio/fold0/177726-0-0-30.wav",  # air_conditioner
   "data/UrbanSound8K/audio/fold1/199769-1-0-7.wav",   # car_horn
   "data/UrbanSound8K/audio/fold2/187110-2-0-8.wav",   # children_playing
@@ -496,7 +496,7 @@ p <- ggplot() +
   annotation_raster(fg, xmin = 1, xmax = 40, ymin = 0, ymax = 13) +
   
   labs(
-    title = "Speech City Skyline: Urban Soundscape Frame {round(frame_time,3)}",
+    title = "Speech City Skyline: Urban Soundscape Frame {round(frame_time,3)} s",
     
     x = "Frequency Band",
     y = "Acoustic Energy / Building Height",
@@ -535,25 +535,37 @@ nrow(fog_data)
 nrow(sound_data)
 ```
 
+I have commented rendering the animation code because I experienced rendeding issues while animating.
+
+I have below entered a generated .gif of my visualization. When replicating this locally, anyone can uncomment this below code chunk and generate the animated visualization .gif!
+
 ```{r}
 
 # Rendering the animation, this converts the ggplot object into a GIF that shows how the skyline evolves over time
 
-animate(
-  p,
-  
-  # Total number of frames in the animation
-  nframes = 160,
-  
-  # Frames per second (speed of playback)
-  
-  fps = 1,
-  
-# follwoing are the output dimensions of the animation (in pixels)
+# animated_gif<- animate(
+#   p,
+#   
+#   # Total number of frames in the animation
+#   nframes = 160,
+#   
+#   # Frames per second (speed of playback)
+#   
+#   fps = 1,
+#   
+# # follwoing are the output dimensions of the animation (in pixels)
+# 
+#   width = 900,
+#   height = 650,
+# 
+# renderer = gifski_renderer("speech_city_skyline.gif")
+# )
 
-  width = 900,
-  height = 650
-)
+# animated_gif
 ```
 
-I tried to add maximum number of frames to present a smoother motion, but when imcreasing it , longer render times occurr. Also, I kept a reasonable frames per second value for human naked eye to visualize the sound features via the skyline slowly.
+I tried to add maximum number of frames to present a smoother motion. Also, I kept a reasonable frames per second value for human naked eye to visualize the sound features via the skyline slowly.
+
+So, the final visualization is,
+
+![](speech_city_skyline.gif)
