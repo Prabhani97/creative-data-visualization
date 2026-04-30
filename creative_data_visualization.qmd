@@ -535,9 +535,9 @@ nrow(fog_data)
 nrow(sound_data)
 ```
 
-I have commented rendering the animation code because I experienced rendeding issues while animating.
+I have commented rendering the animation code to avoid re-rendering it and I have below entered a generated .gif of my visualization.
 
-I have below entered a generated .gif of my visualization. When replicating this locally, anyone can uncomment this below code chunk and generate the animated visualization .gif!
+When replicating this locally, anyone can uncomment this below code chunk and generate the animated visualization .gif !!
 
 ```{r}
 
@@ -562,6 +562,12 @@ I have below entered a generated .gif of my visualization. When replicating this
 # )
 
 # animated_gif
+```
+
+Reading the generated and saved file from the folder.
+
+```{r}
+knitr::include_graphics("speech_city_skyline.gif")
 ```
 
 I tried to add maximum number of frames to present a smoother motion. Also, I kept a reasonable frames per second value for human naked eye to visualize the sound features via the skyline slowly.
