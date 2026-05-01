@@ -351,19 +351,19 @@ The following object is masked from 'package:readr':
 <span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Normalizing each file so no one sound dominates only because it is louder</span></span>
 <span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  max_val <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(samples), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (max_val <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> samples <span class="sc">/</span> max_val</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  maximum_value <span class="ot">&lt;-</span> <span class="fu">max</span>(<span class="fu">abs</span>(samples), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (maximum_value <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> samples <span class="sc">/</span> maximum_value</span>
 <span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Making every sound the same duration</span></span>
 <span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  target_len <span class="ot">&lt;-</span> target_sr <span class="sc">*</span> target_duration</span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  target_length <span class="ot">&lt;-</span> target_sr <span class="sc">*</span> target_duration</span>
 <span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(samples) <span class="sc">&gt;</span> target_len) {</span>
-<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> samples[<span class="dv">1</span><span class="sc">:</span>target_len]</span>
-<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(samples) <span class="sc">&lt;</span> target_len) {</span>
-<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> <span class="fu">c</span>(samples, <span class="fu">rep</span>(<span class="dv">0</span>, target_len <span class="sc">-</span> <span class="fu">length</span>(samples)))</span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">length</span>(samples) <span class="sc">&gt;</span> target_length) {</span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> samples[<span class="dv">1</span><span class="sc">:</span>target_length]</span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(samples) <span class="sc">&lt;</span> target_length) {</span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>    samples <span class="ot">&lt;-</span> <span class="fu">c</span>(samples, <span class="fu">rep</span>(<span class="dv">0</span>, target_length <span class="sc">-</span> <span class="fu">length</span>(samples)))</span>
 <span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(samples)</span>
@@ -431,7 +431,7 @@ The following object is masked from 'package:readr':
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating spectrogram without plotting it directly</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>spec <span class="ot">&lt;-</span> <span class="fu">spectro</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>spectrogram <span class="ot">&lt;-</span> <span class="fu">spectro</span>(</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  combined_wave,</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">wl =</span> <span class="dv">512</span>,</span>
@@ -440,9 +440,9 @@ The following object is masked from 'package:readr':
 <span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting amplitude, frequency, and time information</span></span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>amp <span class="ot">&lt;-</span> spec<span class="sc">$</span>amp</span>
-<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>freq <span class="ot">&lt;-</span> spec<span class="sc">$</span>freq</span>
-<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> spec<span class="sc">$</span>time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>amplitude <span class="ot">&lt;-</span> spectrogram<span class="sc">$</span>amp</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>frequency <span class="ot">&lt;-</span> spectrogram<span class="sc">$</span>freq</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>time <span class="ot">&lt;-</span> spectrogram<span class="sc">$</span>time</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="reshaping-the-spectrogram-into-tidy-data" class="level3">
@@ -451,8 +451,8 @@ The following object is masked from 'package:readr':
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting the amplitude matrix to a data frame</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>spectrogram_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(amp)</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>spectrogram_df<span class="sc">$</span>freq <span class="ot">&lt;-</span> freq</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>spectrogram_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(amplitude)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>spectrogram_df<span class="sc">$</span>freq <span class="ot">&lt;-</span> frequency</span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Converting from wide matrix format to long tidy format</span></span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
@@ -479,9 +479,9 @@ The following object is masked from 'package:readr':
 <span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># As mentioned above I need to divide the frequency range into 40 building positions</span></span>
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">freq_band =</span> <span class="fu">as.numeric</span>(<span class="fu">cut</span>(freq, <span class="at">breaks =</span> <span class="dv">40</span>))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">frequency_band =</span> <span class="fu">as.numeric</span>(<span class="fu">cut</span>(freq, <span class="at">breaks =</span> <span class="dv">40</span>))</span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time_index, freq_band) <span class="sc">%&gt;%</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time_index, frequency_band) <span class="sc">%&gt;%</span></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    </span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Averaging energy within each time-frequency building</span></span>
@@ -530,7 +530,7 @@ The following object is masked from 'package:readr':
 <span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(energy_scaled <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">rep</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">n</span>(), <span class="at">each =</span> <span class="dv">4</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_x =</span> freq_band <span class="sc">+</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="sc">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_x =</span> frequency_band <span class="sc">+</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="sc">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>),</span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">window_y =</span> <span class="fu">runif</span>(<span class="fu">n</span>(), <span class="fl">0.4</span>, energy_scaled <span class="sc">-</span> <span class="fl">0.2</span>)</span>
 <span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -742,6 +742,17 @@ The following object is masked from 'package:readr':
 <span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
 <span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a><span class="co"># animated_gif</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Reading the generated and saved file from the folder.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"speech_city_skyline.gif"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="speech_city_skyline.gif" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
 </div>
 <p>I tried to add maximum number of frames to present a smoother motion. Also, I kept a reasonable frames per second value for human naked eye to visualize the sound features via the skyline slowly.</p>
 <p>So, the final visualization is,</p>
