@@ -178,19 +178,19 @@ read_clean_sound <- function(path, target_sr = 22050, target_duration = 4) {
   
   # Normalizing each file so no one sound dominates only because it is louder
   
-  max_val <- max(abs(samples), na.rm = TRUE)
-  if (max_val > 0) {
-    samples <- samples / max_val
+  maximum_value <- max(abs(samples), na.rm = TRUE)
+  if (maximum_value > 0) {
+    samples <- samples / maximum_value
   }
   
   # Making every sound the same duration
   
-  target_len <- target_sr * target_duration
+  target_length <- target_sr * target_duration
   
-  if (length(samples) > target_len) {
-    samples <- samples[1:target_len]
-  } else if (length(samples) < target_len) {
-    samples <- c(samples, rep(0, target_len - length(samples)))
+  if (length(samples) > target_length) {
+    samples <- samples[1:target_length]
+  } else if (length(samples) < target_length) {
+    samples <- c(samples, rep(0, target_length - length(samples)))
   }
   
   return(samples)
@@ -248,7 +248,7 @@ To build the city from sound, I first convert the mixed audio into a spectrogram
 ```{r}
 # Creating spectrogram without plotting it directly
 
-spec <- spectro(
+spectrogram <- spectro(
   combined_wave,
   plot = FALSE,
   wl = 512,
@@ -257,9 +257,9 @@ spec <- spectro(
 
 # Extracting amplitude, frequency, and time information
 
-amp <- spec$amp
-freq <- spec$freq
-time <- spec$time
+amplitude <- spectrogram$amp
+frequency <- spectrogram$freq
+time <- spectrogram$time
 ```
 
 ### Reshaping the spectrogram into tidy data
@@ -269,8 +269,8 @@ The spectrogram is stored as a matrix table, but I want to turn this into long-f
 ```{r}
 # Converting the amplitude matrix to a data frame
 
-spectrogram_df <- as.data.frame(amp)
-spectrogram_df$freq <- freq
+spectrogram_df <- as.data.frame(amplitude)
+spectrogram_df$freq <- frequency
 
 # Converting from wide matrix format to long tidy format
 
@@ -299,9 +299,9 @@ speech_city <- sound_data %>%
     
     # As mentioned above I need to divide the frequency range into 40 building positions
     
-    freq_band = as.numeric(cut(freq, breaks = 40))
+    frequency_band = as.numeric(cut(freq, breaks = 40))
   ) %>%
-  group_by(time_index, freq_band) %>%
+  group_by(time_index, frequency_band) %>%
   summarise(
     
     # Averaging energy within each time-frequency building
@@ -346,7 +346,7 @@ window_data <- speech_city %>%
   filter(energy_scaled > 2) %>%
   slice(rep(1:n(), each = 4)) %>%
   mutate(
-    window_x = freq_band + runif(n(), -0.25, 0.25),
+    window_x = frequency_band + runif(n(), -0.25, 0.25),
     window_y = runif(n(), 0.4, energy_scaled - 0.2)
   )
 
