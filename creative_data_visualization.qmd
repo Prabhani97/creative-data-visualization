@@ -38,7 +38,7 @@ And then I convert that sound into a time- frequency-energy representation. Freq
 **The visualization is based on a metaphor: acoustic structure becomes architecture. Instead of showing the sound as a traditional spectrogram, I map the sound onto a city skyline.**
 
 | Audio feature | Visual element | Meaning |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Frequency band | Building position along the x-axis | Lower to higher frequency regions of the sound |
 | Acoustic energy | Building height | Stronger sound energy creates taller buildings |
 | Time | Animation frame | The city changes as the sound changes |
@@ -445,7 +445,7 @@ p <- ggplot() +
     position = "identity"
   ) +
 
-# Here is where my data driven main buildings are drawm. Here, each bar, I am adding as a frequency band, and by height i present acoustic energy and by color i present energy category (quite/active/ dominant(glow))
+# Here is where my data driven main buildings are drawm. Here, each bar, I am adding as a frequency band, and by height i present acoustic energy and by color i present energy category (quite/active/ dominant(glow)).
   
   geom_col(
     data = speech_city,
